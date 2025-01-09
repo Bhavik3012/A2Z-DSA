@@ -42,6 +42,21 @@ void bubble_sort(int arr[], int n)
         }
     }
 }
+
+void Insertion_sort(int arr[], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        int j = i;
+        while (j > 0 && arr[j - 1] > arr[j])
+        {
+            int temp = arr[j];
+            arr[j] = arr[j - 1];
+            arr[j - 1] = temp;
+            j--;
+        }
+    }
+}
 int main()
 {
     int n;
@@ -52,7 +67,8 @@ int main()
         cin >> arr[i];
     }
     // selection_sort(arr, n);
-    bubble_sort(arr, n);
+    // bubble_sort(arr, n);
+    Insertion_sort(arr, n);
     for (int i = 0; i < n; i++)
     {
         cout << arr[i] << " ";
