@@ -29,7 +29,6 @@ pair<int, int> maxsum(vector<vector<int>>& grid) {
             if (sums[i + 1] > maximum_sum.second) {
                 maximum_sum.second = sums[i + 1];
                 maximum_sum.first = i + 1;
-                cout<<maximum_sum.first << " "<<maximum_sum.second<<endl;
             }
         }
     return maximum_sum;
@@ -38,7 +37,7 @@ pair<int, int> maxsum(vector<vector<int>>& grid) {
     long long gridGame(vector<vector<int>>& grid) {
         pair<int,int> first_robot_path = maxsum(grid);
         int col = grid[1].size();
-        for(int i=0;i<col;i++){
+        for(int i=0;i<=first_robot_path.first;i++){
             if(i == first_robot_path.first){
                 grid[0][i]=0;
                 for(int j =i;j<col;j++){
@@ -49,6 +48,7 @@ pair<int, int> maxsum(vector<vector<int>>& grid) {
                 grid[0][i]=0;
             }
         }
+       
 
         pair<int,int> second_robot_path = maxsum(grid); 
 
@@ -58,10 +58,12 @@ pair<int, int> maxsum(vector<vector<int>>& grid) {
 
 int main(){
    vector<vector<int>> grid = {
-        {2, 5, 4},
-        {1, 5, 1}
+       
+{20,3,20,17,2,12,15,17,4,15},
+{20,10,13,14,15,5,2,3,14,3}
     }; 
-
+// answer 63;
+// [[20,3,20,17,2,12,15,17,4,15],[20,10,13,14,15,5,2,3,14,3]]
     int n = gridGame(grid);
     cout<<n;
     return 0;
