@@ -3,90 +3,50 @@ using namespace std;
 
 vector<int> eventualSafeNodes(vector<vector<int>> &graph)
 {
-    vector<int> terminal_nodes;
+    int n = graph.size();
+    vector<int> adj[n];
+    vector<int> indegree(n, 0);
 
-    for (int i = 0; i < graph.size(); i++)
+    // Reverse the graph and compute in-degrees
+    for (int i = 0; i < n; i++)
     {
-        if (graph[i].size() < 1)
+        for (int j = 0; j < graph[i].size(); j++)
         {
-            terminal_nodes.push_back(i);
+            adj[graph[i][j]].push_back(i);
+            indegree[i]++;
         }
     }
+
+    queue<int> q;
+
+    // Enqueue nodes with zero in-degree
+    for (int i = 0; i < n; i++)
+    {
+        if (indegree[i] == 0)
+        {
+            q.push(i);
+        }
+    }
+
     vector<int> ans;
-    for (int i = 0; i < graph.size(); i++)
-    {
-        if (graph[i].size() < 1)
-        {
-            continue;
-        }
-        else if (graph[i].size() > terminal_nodes.size())
-        {
-            continue;
-        }
-        else
-        {
-            int cnt = 0;
-            for (int j = 0; j < graph[i].size(); j++)
-            {
-                int cnt2 = 0;
-                for (int k = 0; k < terminal_nodes.size(); k++)
-                {
-                    if (graph[i][j] == terminal_nodes[k])
-                    {
-                        cnt2++;
-                    }
-                }
-                if (cnt2 == 1)
-                {
-                    cnt++;
-                }
-            }
-            if (cnt == graph[i].size())
-            {
-                ans.push_back(i);
-            }
-        }
-    }
-    for (int i = 0; i < terminal_nodes.size(); i++)
-    {
-        ans.push_back(terminal_nodes[i]);
-    }
 
-    for (int i = graph.size() - 1; i >= 0; i--)
+    // Perform topological sorting
+    while (!q.empty())
     {
-        if (graph[i].size() < 1)
+        int node = q.front();
+        q.pop();
+        ans.push_back(node);
+        for (auto it : adj[node])
         {
-            continue;
-        }
-        else if (graph[i].size() > terminal_nodes.size())
-        {
-            continue;
-        }
-        else
-        {
-            int cnt = 0;
-            for (int j = 0; j < graph[i].size(); j++)
+            indegree[it]--;
+            if (indegree[it] == 0)
             {
-                int cnt2 = 0;
-                for (int k = 0; k < terminal_nodes.size(); k++)
-                {
-                    if (graph[i][j] == terminal_nodes[k])
-                    {
-                        cnt2++;
-                    }
-                }
-                if (cnt2 == 1)
-                {
-                    cnt++;
-                }
-            }
-            if (cnt == graph[i].size())
-            {
-                ans.push_back(i);
+                q.push(it);
             }
         }
     }
 
+    // Sort the result
     sort(ans.begin(), ans.end());
     return ans;
 }
